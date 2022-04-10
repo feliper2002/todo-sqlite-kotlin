@@ -53,7 +53,7 @@ class SqliteHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
 
         contentValues.put(ID, id)
 
-        db.delete(TABLE_NAME, "id=$id", null)
+        db.delete(TABLE_NAME, "id=?", arrayOf(id))
         db.close()
     }
 

@@ -53,11 +53,16 @@ class MainActivity : AppCompatActivity() {
     private fun addTodo() {
         val title = titleText.text.toString()
 
-        val todo = TodoModel(id = AppFunctions.randomID(title), title = title)
-        val status = sqlHelper.insertTodo(todo)
-        if (status > -1) {
-            getTodos()
-            clearInputText()
+        if (title.isNotEmpty()) {
+            val todo = TodoModel(id = AppFunctions.randomID(title), title = title)
+            val status = sqlHelper.insertTodo(todo)
+            if (status > -1) {
+                Toast.makeText(this, "$title criado!", Toast.LENGTH_SHORT).show()
+                getTodos()
+                clearInputText()
+            }
+        } else {
+            Toast.makeText(this, "Título do ToDo não pode ser vazio!", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -69,6 +74,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun deleteTodo(id: String) {
         sqlHelper.deleteTodo(id)
+        Toast.makeText(this, "ToDo deletado!", Toast.LENGTH_SHORT).show()
         getTodos()
     }
 
