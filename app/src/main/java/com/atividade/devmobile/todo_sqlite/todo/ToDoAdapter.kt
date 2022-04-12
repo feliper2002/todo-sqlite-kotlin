@@ -9,6 +9,14 @@ import com.atividade.devmobile.todo_sqlite.R
 
 class ToDoAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    /*
+        Esta classe é responsável por fazer toda a `adaptação` dos dados inseridos
+        no banco de dados do SQLite, permitindo a conexão com a interface do aplicativo
+
+        O `Adapter` utilizado para este caso foi o [RecyclerView.Adapter], Widget
+        comumente utilizado para exibição de objetos filhos em formato de lista
+     */
+
     private var items: ArrayList<TodoModel> = ArrayList()
     private var onClickDeleteItem: ((TodoModel)->Unit)? = null
 

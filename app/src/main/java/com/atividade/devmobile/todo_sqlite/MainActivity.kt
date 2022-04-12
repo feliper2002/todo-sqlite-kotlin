@@ -16,6 +16,11 @@ import kotlinx.android.synthetic.main.todo_card.*
 
 class MainActivity : AppCompatActivity() {
 
+    /*
+    Utilizei a palavra reservada `lateinit` para informar ao kotlin
+    que as referentes variáveis seriam inicilizadas ou instanciadas tardiamente
+    */
+
     private lateinit var btnAdd: Button
     private lateinit var titleText: EditText
     private lateinit var sqlHelper: SqliteHelper
@@ -39,18 +44,43 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() {
+        /*
+        Este método foi utilizado para inicializar as variáveis referentes à
+        parte visual do aplicativo:
+        - Botão de adicionar ToDo
+        - Input de título
+        - RecyclerView
+        */
         btnAdd = findViewById(R.id.addToDo)
         titleText = findViewById(R.id.todoInput)
         recyclerView = findViewById(R.id.reclyclerView)
     }
 
     private fun initRecyclerView() {
+        /*
+        Este método foi utilizado para inicializar e instanciar variáveis e valores
+        referentes ao RecyclerView. Bem como seu LayoutManager e adapter.
+        */
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = ToDoAdapter()
         recyclerView.adapter = adapter
     }
 
     private fun addTodo() {
+        /*
+        Este método se comunica com o método `inserTodo()` da classe [SQLiteHelper]
+
+        Verifica se o texto inserido no input está vazio
+        Caso `true`:
+            - Exibe [Toast] com mensagem de que o texto está vazio
+            - Não realiza nenhuma ação do [SQLiteHelper]
+        Caso `false`:
+            - Exibe [Toast] de ToDo criado com sucesso
+            - Adiciona o título ao [TodoModel] e gera um ID aleatório
+            - Se comunica com o [SQLiteHelper] para inserir o ToDo no banco de dados
+            - Atualiza a lista de ToDo com o método `getTodos()`
+            - Reseta o texto do input
+        */
         val title = titleText.text.toString()
 
         if (title.isNotEmpty()) {
@@ -67,12 +97,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getTodos() {
+        /*
+        Este método resgata da classe [SQLiteHelper] os dados que estão inseridos
+        na tabela `ToDo` do banco de dados.
+
+        Após atualizar estes dados, o [adapter] é notificado para exibir esses valores
+        no [RecyclerView]
+        */
         val list = sqlHelper.getTodos()
         adapter.setDataset(list)
         println(list)
     }
 
     private fun deleteTodo(id: String) {
+        /*
+        Este método deleta o ToDo da referente tabela no banco de dados através de seu ID.
+
+        Após isso, atualiza novamente a lista de ToDos com o método `getTodos()`
+        */
         sqlHelper.deleteTodo(id)
         Toast.makeText(this, "ToDo deletado!", Toast.LENGTH_SHORT).show()
         getTodos()

@@ -9,6 +9,14 @@ import com.atividade.devmobile.todo_sqlite.todo.TodoModel
 
 class SqliteHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
+    /*
+        Esta classe é responsável por fazer toda a comunicação com o banco de dados do `SQLite` através
+        da super classe [SQLiteOpenHelper]
+
+        Nesta classe é onde ocorre a criação das tabelas, bem como toda a comunicação necessária
+        para os métodos de `intert`, `delete` e `query`/`get` utilizados para esse projeto.
+     */
+
     override fun onCreate(db: SQLiteDatabase) {
 
         val query = "CREATE TABLE $TABLE_NAME( $ID VARCHAR, $TITLE VARCHAR);"

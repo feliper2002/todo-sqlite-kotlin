@@ -7,6 +7,11 @@ class AppFunctions {
 
     companion object {
         fun randomID(title: String): String {
+            /*
+            Este método utiliza uma String como uma forma de `modificador` para
+            através de uma lógica simples e genérica criar um ID personalizado
+            apenas para identificação dos ToDo no banco de dados
+            */
             var lower = title.lowercase()
 
             lower += "ID"
@@ -19,11 +24,5 @@ class AppFunctions {
 
             return lower
         }
-
-        fun convertChecked(value: Int): Boolean {
-            if (value == 0) return false
-            return true
-        }
     }
-
 }
