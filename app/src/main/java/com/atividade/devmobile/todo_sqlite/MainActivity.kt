@@ -2,17 +2,11 @@ package com.atividade.devmobile.todo_sqlite
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import android.widget.*
 import com.atividade.devmobile.todo_sqlite.data.SqliteHelper
 import com.atividade.devmobile.todo_sqlite.functions.AppFunctions
-import com.atividade.devmobile.todo_sqlite.todo.ToDoAdapter
+import com.atividade.devmobile.todo_sqlite.todo.ToDoListAdapter
 import com.atividade.devmobile.todo_sqlite.todo.TodoModel
-import kotlinx.android.synthetic.main.todo_card.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,22 +19,25 @@ class MainActivity : AppCompatActivity() {
     private lateinit var titleText: EditText
     private lateinit var sqlHelper: SqliteHelper
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: ToDoAdapter
+    private var arrayList: ArrayList<TodoModel> = ArrayList()
+
+
+    private lateinit var listView: ListView
+    private lateinit var listViewAdapter: ToDoListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         initView()
-        initRecyclerView()
+        initListView()
 
         sqlHelper = SqliteHelper(this)
         getTodos()
 
         btnAdd.setOnClickListener{ addTodo() }
 
-        adapter.setOnClickDeleteTodo { deleteTodo(it.id) }
+        listViewAdapter.setOnClickDeleteTodo { deleteTodo(it.id) }
     }
 
     private fun initView() {
@@ -49,21 +46,20 @@ class MainActivity : AppCompatActivity() {
         parte visual do aplicativo:
         - Botão de adicionar ToDo
         - Input de título
-        - RecyclerView
         */
         btnAdd = findViewById(R.id.addToDo)
         titleText = findViewById(R.id.todoInput)
-        recyclerView = findViewById(R.id.reclyclerView)
+
+        listView = findViewById(R.id.todoList)
     }
 
-    private fun initRecyclerView() {
+    private fun initListView() {
         /*
         Este método foi utilizado para inicializar e instanciar variáveis e valores
         referentes ao RecyclerView. Bem como seu LayoutManager e adapter.
         */
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = ToDoAdapter()
-        recyclerView.adapter = adapter
+        listViewAdapter = ToDoListAdapter(this, arrayList)
+        listView.adapter = listViewAdapter
     }
 
     private fun addTodo() {
@@ -105,7 +101,8 @@ class MainActivity : AppCompatActivity() {
         no [RecyclerView]
         */
         val list = sqlHelper.getTodos()
-        adapter.setDataset(list)
+        arrayList = list
+        listViewAdapter.setDataset(list)
         println(list)
     }
 
