@@ -17,7 +17,7 @@ class ToDoAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         comumente utilizado para exibição de objetos filhos em formato de lista
      */
 
-    private var items: ArrayList<TodoModel> = ArrayList()
+    var items: ArrayList<TodoModel> = ArrayList()
     private var onClickDeleteItem: ((TodoModel)->Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

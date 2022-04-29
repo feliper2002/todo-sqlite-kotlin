@@ -2,17 +2,13 @@ package com.atividade.devmobile.todo_sqlite
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.atividade.devmobile.todo_sqlite.data.SqliteHelper
 import com.atividade.devmobile.todo_sqlite.functions.AppFunctions
 import com.atividade.devmobile.todo_sqlite.todo.ToDoAdapter
 import com.atividade.devmobile.todo_sqlite.todo.TodoModel
-import kotlinx.android.synthetic.main.todo_card.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,9 +24,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ToDoAdapter
 
+    private lateinit var searchView: SearchView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        initSearchView()
 
         initView()
         initRecyclerView()
@@ -54,6 +54,40 @@ class MainActivity : AppCompatActivity() {
         btnAdd = findViewById(R.id.addToDo)
         titleText = findViewById(R.id.todoInput)
         recyclerView = findViewById(R.id.reclyclerView)
+    }
+
+    private fun initSearchView() {
+        searchView = findViewById(R.id.searchView)
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchView.clearFocus()
+                val list = sqlHelper.getTodos()
+                adapter.setDataset(list)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (adapter.items.filter { todo -> todo.title.contains("$newText") }.isNotEmpty()) {
+                    var array = adapter.items.filter { todo -> todo.title.contains("$newText") }
+                    var arrayList = ArrayList<TodoModel>()
+
+                    for (e in array) {
+                        arrayList.add(e)
+                    }
+
+                    println(arrayList)
+                    adapter.setDataset(arrayList)
+                } else if (newText.equals("")) {
+                    val list = sqlHelper.getTodos()
+                    adapter.setDataset(list)
+                } else {
+                    val list = sqlHelper.getTodos()
+                    adapter.setDataset(list)
+                }
+                return false
+            }
+        })
     }
 
     private fun initRecyclerView() {
