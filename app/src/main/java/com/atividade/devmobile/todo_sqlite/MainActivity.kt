@@ -47,6 +47,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        /*
+        Este método é responsável por preencher o Menu através
+        do [MenuInflater]
+        */
         var menuInflater = MenuInflater(this)
         menuInflater.inflate(R.menu.menu_clear, menu)
 
@@ -54,6 +58,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        /*
+        Este método é responsável por definir as [ações de clique] em cada opção
+        do Menu
+        */
         when(item.itemId) {
             R.id.icon_clear -> {
                 deleteAllTodos()
@@ -85,8 +93,7 @@ class MainActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 searchView.clearFocus()
-                val list = sqlHelper.getTodos()
-                adapter.setDataset(list)
+                getTodos()
                 return false
             }
 
