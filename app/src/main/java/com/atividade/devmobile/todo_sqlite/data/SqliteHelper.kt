@@ -65,6 +65,12 @@ class SqliteHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         db.close()
     }
 
+    fun deleteAll() {
+        val db = writableDatabase
+        db.delete(TABLE_NAME, null, arrayOf())
+        db.close()
+    }
+
     fun getTodos(): ArrayList<TodoModel> {
         val list = ArrayList<TodoModel>()
         val selectQuery = "SELECT * FROM $TABLE_NAME"

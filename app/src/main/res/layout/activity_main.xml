@@ -64,6 +64,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp"
+        android:queryHint="Pesquise por um ToDo"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

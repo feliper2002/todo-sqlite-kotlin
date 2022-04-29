@@ -2,6 +2,9 @@ package com.atividade.devmobile.todo_sqlite
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -43,6 +46,26 @@ class MainActivity : AppCompatActivity() {
         adapter.setOnClickDeleteTodo { deleteTodo(it.id) }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        var menuInflater = MenuInflater(this)
+        menuInflater.inflate(R.menu.menu_clear, menu)
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.icon_clear -> {
+                deleteAllTodos()
+            }
+            R.id.refresh -> {
+                getTodos()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun initView() {
         /*
         Este método foi utilizado para inicializar as variáveis referentes à
@@ -68,8 +91,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (adapter.items.filter { todo -> todo.title.contains("$newText") }.isNotEmpty()) {
-                    var array = adapter.items.filter { todo -> todo.title.contains("$newText") }
+                if (adapter.items.filter { todo -> todo.title.lowercase().contains("${newText?.lowercase()}") }.isNotEmpty()) {
+                    var array = adapter.items.filter { todo -> todo.title.lowercase().contains("${newText?.lowercase()}") }
                     var arrayList = ArrayList<TodoModel>()
 
                     for (e in array) {
@@ -79,13 +102,11 @@ class MainActivity : AppCompatActivity() {
                     println(arrayList)
                     adapter.setDataset(arrayList)
                 } else if (newText.equals("")) {
-                    val list = sqlHelper.getTodos()
-                    adapter.setDataset(list)
+                    getTodos()
                 } else {
-                    val list = sqlHelper.getTodos()
-                    adapter.setDataset(list)
+                    getTodos()
                 }
-                return false
+                return true
             }
         })
     }
@@ -151,6 +172,17 @@ class MainActivity : AppCompatActivity() {
         */
         sqlHelper.deleteTodo(id)
         Toast.makeText(this, "ToDo deletado!", Toast.LENGTH_SHORT).show()
+        getTodos()
+    }
+
+    private fun deleteAllTodos() {
+        /*
+        Este método deleta todos os ToDo da referente tabela no banco de dados através de seu ID.
+
+        Após isso, atualiza novamente a lista de ToDos com o método `getTodos()`
+        */
+        sqlHelper.deleteAll()
+        Toast.makeText(this, "Todos os ToDos foram deletado!", Toast.LENGTH_SHORT).show()
         getTodos()
     }
 
