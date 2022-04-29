@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import com.atividade.devmobile.todo_sqlite.data.SqliteHelper
+import com.atividade.devmobile.todo_sqlite.databinding.ActivityMainBinding
 import com.atividade.devmobile.todo_sqlite.functions.AppFunctions
 import com.atividade.devmobile.todo_sqlite.todo.ToDoListAdapter
 import com.atividade.devmobile.todo_sqlite.todo.TodoModel
@@ -25,9 +26,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var listView: ListView
     private lateinit var listViewAdapter: ToDoListAdapter
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         initView()
         initListView()
@@ -50,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         btnAdd = findViewById(R.id.addToDo)
         titleText = findViewById(R.id.todoInput)
 
-        listView = findViewById(R.id.todoList)
+        listView = binding.todoList
     }
 
     private fun initListView() {
