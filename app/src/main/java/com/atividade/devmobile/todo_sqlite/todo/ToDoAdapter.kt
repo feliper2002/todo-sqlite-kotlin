@@ -46,8 +46,8 @@ class ToDoAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
 
-    fun setDataset(products: ArrayList<TodoModel>) {
-        this.items = products
+    fun setDataset(todos: ArrayList<TodoModel>) {
+        this.items = todos
         notifyDataSetChanged()
     }
 
